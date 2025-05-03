@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View -->
+    <record id="momo_transaction_pending_list_view" model="ir.ui.view">
+        <field name="name">momo.transaction.pending.list</field>
+        <field name="model">momo.transaction.pending</field>
+        <field name="arch" type="xml">
+            <list string="Pending MoMo Transactions">
+                <field name="reference"/>
+                <field name="transaction_id"/>
+                <field name="timeout_time"/>
+                <field name="create_date"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="momo_transaction_pending_form_view" model="ir.ui.view">
+        <field name="name">momo.transaction.pending.form</field>
+        <field name="model">momo.transaction.pending</field>
+        <field name="arch" type="xml">
+            <form string="Pending MoMo Transaction">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_original_transaction"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-credit-card">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">View Original Transaction</span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="reference" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="transaction_id"/>
+                            <field name="momo_request_id"/>
+                            <field name="timeout_time"/>
+                        </group>
+                        <group>
+                            <field name="create_date"/>
+                            <field name="signature"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="momo_transaction_pending_search_view" model="ir.ui.view">
+        <field name="name">momo.transaction.pending.search</field>
+        <field name="model">momo.transaction.pending</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="reference"/>
+                <field name="transaction_id"/>
+                <field name="timeout_time"/>
+                <filter string="Today" name="today"
+                        domain="[('create_date', '>=', context_today().strftime('%Y-%m-%d'))]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Creation Date" name="creation_date" context="{'group_by': 'create_date:day'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <!-- Action -->
+    <record id="action_momo_transaction_pending" model="ir.actions.act_window">
+        <field name="name">Pending MoMo Transactions</field>
+        <field name="res_model">momo.transaction.pending</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_pending': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No pending MoMo transactions found
+            </p>
+            <p>
+                This view shows MoMo transactions that are currently in pending status and waiting for completion.
+            </p>
+        </field>
+    </record>
+    <!-- Menu Root (Định nghĩa menu gốc) -->
+    <menuitem id="menu_momo_transaction_root"
+              name="MoMo Transactions"
+              web_icon="transaction_manager,static/description/icon.png"
+              sequence="70"/>
+
+    <!-- Menu Pending Transactions -->
+    <menuitem id="menu_momo_transaction_pending"
+              name="Pending Transactions"
+              action="action_momo_transaction_pending"
+              parent="menu_momo_transaction_root"
+              sequence="10"/>
+</odoo>

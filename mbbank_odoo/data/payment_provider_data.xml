@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="payment_provider_mbbank" model="payment.provider">
+        <field name="name">MB Bank</field>
+        <field name="code">mbbank</field>
+        <field name="image_128" type="base64" file="mbbank_odoo/static/description/icon.png"/>
+        <field name="redirect_form_view_id" ref="redirect_form"/>
+    </record>
+</odoo>

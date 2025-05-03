@@ -1,0 +1,13 @@
+<odoo noupdate="1">
+    <record id="payment_method_mbbank" model="payment.method">
+        <field name="name">MB Bank</field>
+        <field name="code">mbbank</field>
+        <field name="sequence">0</field>
+        <field name="image" type="base64" file="mbbank_odoo/static/description/icon.png" />
+        <field name="support_tokenization">False</field>
+        <field name="support_express_checkout">False</field>
+        <field name="support_refund">partial</field>
+        <field name="supported_country_ids" eval="[Command.set([ref('base.vn')])]" />
+        <field name="supported_currency_ids" eval="[Command.set([ref('base.VND')])]" />
+    </record>
+</odoo>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="mbbank_transaction_rule_manager" model="ir.rule">
+            <field name="name">MB Bank Transactions: All</field>
+            <field name="model_id" ref="model_mbbank_transaction_processing"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('account.group_account_manager'))]"/>
+        </record>
+
+        <record id="mbbank_transaction_retry_rule_manager" model="ir.rule">
+            <field name="name">MB Bank Transaction Retries: All</field>
+            <field name="model_id" ref="model_mbbank_transaction_retry"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('account.group_account_manager'))]"/>
+        </record>
+    </data>
+</odoo>

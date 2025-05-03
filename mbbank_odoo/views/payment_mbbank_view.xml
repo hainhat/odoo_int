@@ -1,0 +1,37 @@
+<odoo>
+    <record id="payment_provider_form_mbbank" model="ir.ui.view">
+        <field name="name">MB Bank Provider Form</field>
+        <field name="model">payment.provider</field>
+        <field name="inherit_id" ref="payment.payment_provider_form"/>
+        <field name="arch" type="xml">
+            <group name="provider_credentials" position="inside">
+                <group invisible="code != 'mbbank'" name="mbbank_credentials">
+                    <field name="mb_merchant_id"
+                           string="Merchant ID"
+                           required="code == 'mbbank' and state != 'disabled'"
+                    />
+                    <field name="mb_access_code"
+                           string="Access Code"
+                           required="code == 'mbbank' and state != 'disabled'"
+                    />
+                    <field name="mb_hash_secret"
+                           string="Hash Secret"
+                           required="code == 'mbbank' and state != 'disabled'"
+                    />
+                    <field name="mb_username"
+                           string="Username"
+                           required="code == 'mbbank' and state != 'disabled'"
+                    />
+                    <field name="mb_password"
+                           string="Password"
+                           required="code == 'mbbank' and state != 'disabled'"
+                    />
+                    <field name="mb_payment_method"
+                           string="Payment Method"
+                           required="code == 'mbbank' and state != 'disabled'"
+                    />
+                </group>
+            </group>
+        </field>
+    </record>
+</odoo>

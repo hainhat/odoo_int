@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_momo_transaction_pending_admin,momo.transaction.pending admin,model_momo_transaction_pending,account.group_account_manager,1,1,1,1
+access_momo_transaction_pending_user,momo.transaction.pending user,model_momo_transaction_pending,base.group_user,1,0,0,0
+access_momo_transaction_retry_admin,momo.transaction.retry admin,model_momo_transaction_retry,account.group_account_manager,1,1,1,1
+access_momo_transaction_retry_user,momo.transaction.retry user,model_momo_transaction_retry,base.group_user,1,0,0,0

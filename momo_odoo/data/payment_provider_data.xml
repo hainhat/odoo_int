@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="payment_provider_momo" model="payment.provider">
+        <field name="name">MoMo</field>
+        <field name="code">momo</field>
+        <field name="image_128" type="base64" file="momo_odoo/static/description/icon.png"/>
+        <field name="redirect_form_view_id" ref="redirect_form"/>
+    </record>
+</odoo>

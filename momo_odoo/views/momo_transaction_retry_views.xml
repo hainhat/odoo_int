@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View -->
+    <record id="momo_transaction_retry_list_view" model="ir.ui.view">
+        <field name="name">momo.transaction.retry.list</field>
+        <field name="model">momo.transaction.retry</field>
+        <field name="arch" type="xml">
+            <list string="MoMo Transaction Retry Queue" decoration-warning="retry_count &gt;= 3">
+                <field name="reference"/>
+                <field name="transaction_id"/>
+<!--                <field name="momo_trans_id"/>-->
+                <field name="retry_count"/>
+                <field name="max_retries"/>
+                <field name="next_retry"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="momo_transaction_retry_form_view" model="ir.ui.view">
+        <field name="name">momo.transaction.retry.form</field>
+        <field name="model">momo.transaction.retry</field>
+        <field name="arch" type="xml">
+            <form string="MoMo Transaction Retry">
+                <header>
+                    <button name="retry_transaction" string="Retry Now" type="object" class="oe_highlight"
+                            invisible="state != 'retry'"/>
+                    <field name="state" widget="statusbar" options="{'clickable': '1'}"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_original_transaction"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-credit-card">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">View Original Transaction</span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="reference" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="transaction_id"/>
+                            <field name="momo_request_id"/>
+                            <field name="original_request_id"/>
+<!--                            <field name="momo_trans_id"/>-->
+                            <field name="idempotency_expiry"/>
+                        </group>
+                        <group>
+                            <field name="retry_count"/>
+                            <field name="max_retries"/>
+                            <field name="next_retry"/>
+                            <field name="create_date"/>
+                        </group>
+                    </group>
+                    <group string="Error Information">
+                        <field name="error_message" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="momo_transaction_retry_search_view" model="ir.ui.view">
+        <field name="name">momo.transaction.retry.search</field>
+        <field name="model">momo.transaction.retry</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="reference"/>
+                <field name="transaction_id"/>
+<!--                <field name="momo_trans_id"/>-->
+                <separator/>
+                <filter string="To Retry" name="to_retry" domain="[('state', '=', 'retry')]"/>
+                <filter string="Processing" name="processing" domain="[('state', '=', 'processing')]"/>
+                <separator/>
+                <filter string="High Priority" name="high_priority" domain="[('retry_count', '>=', 3)]"/>
+                <filter string="Due Now" name="due_now"
+                        domain="[('next_retry', '&lt;=', context_today().strftime('%Y-%m-%d %H:%M:%S'))]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Status" name="status" context="{'group_by': 'state'}"/>
+                    <filter string="Retry Count" name="retry_count" context="{'group_by': 'retry_count'}"/>
+                    <filter string="Next Retry" name="next_retry" context="{'group_by': 'next_retry:day'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <!-- Action -->
+    <record id="action_momo_transaction_retry" model="ir.actions.act_window">
+        <field name="name">MoMo Retry Queue</field>
+        <field name="res_model">momo.transaction.retry</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_to_retry': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No MoMo transactions in retry queue
+            </p>
+            <p>
+                This view shows MoMo transactions that encountered issues and are scheduled for automatic retry.
+            </p>
+        </field>
+    </record>
+    <!-- Menu Retry Queue -->
+    <menuitem id="menu_momo_transaction_retry"
+              name="Retry Transaction"
+              action="action_momo_transaction_retry"
+              parent="menu_momo_transaction_root"
+              sequence="20"/>
+</odoo>
