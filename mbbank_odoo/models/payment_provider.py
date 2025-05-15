@@ -43,6 +43,16 @@ class PaymentProviderMBBank(models.Model):
         default='QR',
         required_if_provider="mbbank"
     )
+    # qr_type = fields.Selection([
+    #     ('type1_dynamic', 'Type 1 Dynamic'),
+    #     ('type1_static', 'Type 1 Static'),
+    #     ('type3', 'Type 3'),
+    #     ('type4', 'Type 4')
+    # ], string="QR Type", default='type1_dynamic', required_if_provider="mbbank")
+    # payment_type = fields.Selection([
+    #     (0, 'Master Merchant'),
+    #     (1, 'Sub-Merchant')
+    # ], string="Payment Type", default=1, required_if_provider="mbbank")
 
     @api.model
     def _get_compatible_providers(
@@ -75,6 +85,11 @@ class PaymentProviderMBBank(models.Model):
         """Get the appropriate MB Bank API URL based on environment."""
         base_url = const.SANDBOX_DOMAIN if self.state == 'test' else const.PRODUCTION_DOMAIN
         return f"{base_url}{const.CREATE_ORDER_PATH}"
+
+    def _get_mbbank_refund_url(self):
+        """Get the appropriate MB Bank API URL based on environment."""
+        base_url = const.SANDBOX_DOMAIN if self.state == 'test' else const.PRODUCTION_DOMAIN
+        return f"{base_url}{const.REFUND_PATH}"
 
     def _get_mbbank_auth_token(self):
         """Get OAuth 2.0 token for MB Bank API using Basic Authentication."""

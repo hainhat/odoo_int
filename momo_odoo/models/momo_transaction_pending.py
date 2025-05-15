@@ -127,8 +127,8 @@ class MoMoTransactionPending(models.Model):
             return False
 
         # Uncomment test lỗi
-        # notification_data['resultCode'] = '11'
-        # _logger.info("Simulate error : change result code to 11")
+        notification_data['resultCode'] = '11'
+        _logger.info("Simulate error : change result code to 11")
 
         # Xử lý resultCode
         result_code = notification_data.get('resultCode')

@@ -81,6 +81,9 @@ class MBBankController(http.Controller):
             if 'pg_order_reference' in notification_data:
                 try:
                     reference = notification_data.get('pg_order_reference')
+                    # Nếu pg_order_reference bắt đầu bằng PSQR, loại bỏ tiền tố
+                    if reference.startswith('PSQR'):
+                        reference = reference[4:]  # Chỉ cần loại bỏ PSQR, không cần chuyển đổi
 
                     # Find transaction in pending model
                     pending_tx = request.env['mbbank.transaction.processing'].sudo().search([

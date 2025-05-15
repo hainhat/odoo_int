@@ -11,6 +11,7 @@ SANDBOX_DOMAIN = "https://api-sandbox.mbbank.com.vn"
 PRODUCTION_DOMAIN = "https://api.mbbank.com.vn"
 CREATE_ORDER_PATH = "/private/ms/pg-paygate-authen/paygate/v2/create-order"
 QUERY_STATUS_PATH = "/private/ms/pg-paygate-authen/v2/paygate/detail"
+REFUND_PATH = "/private/ms/pg-paygate-authen/paygate/refund/single"
 
 
 # MB Bank Payment Methods

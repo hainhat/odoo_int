@@ -47,8 +47,6 @@
                     <group>
                         <group>
                             <field name="transaction_id"/>
-                            <field name="mbbank_request_id"/>
-                            <field name="original_request_id"/>
 <!--                            <field name="momo_trans_id"/>-->
                             <field name="idempotency_expiry"/>
                         </group>

@@ -34,12 +34,11 @@ class MBBankTransactionProcessing(models.Model):
     @api.model
     def create_processing_transaction(self, transaction, signature=None, request_id=None):
         """Create a minimalist pending transaction record."""
-        timeout_time = fields.Datetime.now() + timedelta(minutes=5)
         values = {
             'transaction_id': transaction.id,
             'signature': signature,
             'mb_request_id': request_id or str(uuid.uuid4()),
-            'timeout_time': timeout_time
+            'timeout_time': transaction.mb_expire_time
         }
         return self.create(values)
 
@@ -68,7 +67,11 @@ class MBBankTransactionProcessing(models.Model):
                             transaction.reference)
             return False
 
-        # Process error_code (MB Bank use error_code instead of resultCode)
+        # Uncomment test lỗi
+        # notification_data['error_code'] = '92'
+        # _logger.info("Simulate error : change error_code to 92")
+
+        # Process error_code
         error_code = notification_data.get('error_code')
         message = notification_data.get('message', 'Unknown response')
 
@@ -129,7 +132,7 @@ class MBBankTransactionProcessing(models.Model):
         Cron job to process expired MB Bank pending transactions.
         A transaction is considered expired if it exceeds the configured timeout.
         """
-        _logger.info("Starting cron job to process expired processing MB Bank transactions")
+        _logger.info("Starting cron job to process expired MB Bank processing transactions")
 
         # Current time
         current_time = fields.Datetime.now()
@@ -137,7 +140,7 @@ class MBBankTransactionProcessing(models.Model):
         # Find all transactions that have exceeded timeout
         expired_transactions = self.search([('timeout_time', '<=', current_time)])
 
-        _logger.info("Found %s expired processing MB Bank transactions", len(expired_transactions))
+        _logger.info("Found %s expired MB Bank processing transactions", len(expired_transactions))
 
         # Process each transaction
         for transaction in expired_transactions:
@@ -149,7 +152,7 @@ class MBBankTransactionProcessing(models.Model):
                 payment_tx._set_canceled(state_message="MB Bank: Transaction expired (timeout)")
                 _logger.info("Transaction %s marked as canceled due to timeout", payment_tx.reference)
 
-                # Delete pending record
+                # Delete processing record
                 transaction.sudo().unlink()
 
                 # Commit after each transaction to avoid losing progress if there's an error
@@ -160,4 +163,4 @@ class MBBankTransactionProcessing(models.Model):
                                   transaction.reference if hasattr(transaction, 'reference') else "Unknown", str(e))
                 self.env.cr.rollback()
 
-        _logger.info("Finished processing expired processing MB Bank transactions")
+        _logger.info("Finished processing expired MB Bank processing transactions")

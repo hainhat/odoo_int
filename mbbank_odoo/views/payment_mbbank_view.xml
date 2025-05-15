@@ -30,6 +30,14 @@
                            string="Payment Method"
                            required="code == 'mbbank' and state != 'disabled'"
                     />
+<!--                    <field name="qr_type"-->
+<!--                           string="QR Type"-->
+<!--                           required="code == 'mbbank' and state != 'disabled'"-->
+<!--                    />-->
+<!--                    <field name="payment_type"-->
+<!--                           string="Payment Type"-->
+<!--                           required="code == 'mbbank' and state != 'disabled'"-->
+<!--                    />-->
                 </group>
             </group>
         </field>

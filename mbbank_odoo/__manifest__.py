@@ -13,7 +13,7 @@
         'views/payment_mbbank_view.xml',
         'views/payment_mbbank_template.xml',
         'views/mbbank_transaction_processing_views.xml',
-        # 'views/mbbank_transaction_retry_views.xml',
+        'views/mbbank_transaction_retry_views.xml',
         'data/cron_data.xml',
         'data/payment_provider_data.xml',
         'data/payment_method_data.xml',
